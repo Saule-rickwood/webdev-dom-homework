@@ -46,12 +46,12 @@
       </ul>
       <div class="add-form">
         <input
-          type="text"
+          type="text" id="name-field"
           class="add-form-name"
           placeholder="Введите ваше имя"
         />
         <textarea
-          type="textarea"
+          type="textarea" id="comment-field"
           class="add-form-text"
           placeholder="Введите ваш коментарий"
           rows="4"
@@ -65,7 +65,40 @@
 
   <script>
     "use strict";
-    // Код писать здесь
+    const input = document.getElementById('name-field')
+    const input2 = document.getElementById('comment-field')
+    const addName = document.querySelector('.add-form-name')
+    const button = document.querySelector('.add-form-button')
+const commentEl = document.querySelector('.comments')
+
+    button.addEventListener('click', () => {
+      if (!input.value.trim() || !input2.value.trim()) {
+        alert('Введите имя и комментарий')
+        return
+      }
+      const oldHtml = commentEl.innerHTML;
+      commentEl.innerHTML += `<li class="comment">
+          <div class="comment-header">
+            <div>${input.value}</div>
+            <div>${new Date().toLocaleDateString('ru-RU')} ${new Date().toLocaleTimeString('ru-RU',{hour:"2-digit",minute:"2-digit"})}</div>
+          </div>
+          <div class="comment-body">
+            <div class="comment-text">
+              ${input2.value}
+            </div>
+          </div>
+          <div class="comment-footer">
+            <div class="likes">
+              <span class="likes-counter">0</span>
+              <button class="like-button"></button>
+            </div>
+          </div>
+        </li>`
+input.value = '';
+input2.value = ''
+
+    })
+
     console.log("It works!");
   </script>
 </html>
