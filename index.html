@@ -9,40 +9,7 @@
   <body>
     <div class="container">
       <ul class="comments">
-        <li class="comment">
-          <div class="comment-header">
-            <div>Глеб Фокин</div>
-            <div>12.02.22 12:18</div>
-          </div>
-          <div class="comment-body">
-            <div class="comment-text">
-              Это будет первый комментарий на этой странице
-            </div>
-          </div>
-          <div class="comment-footer">
-            <div class="likes">
-              <span class="likes-counter">3</span>
-              <button class="like-button"></button>
-            </div>
-          </div>
-        </li>
-        <li class="comment">
-          <div class="comment-header">
-            <div>Варвара Н.</div>
-            <div>13.02.22 19:22</div>
-          </div>
-          <div class="comment-body">
-            <div class="comment-text">
-              Мне нравится как оформлена эта страница! ❤
-            </div>
-          </div>
-          <div class="comment-footer">
-            <div class="likes">
-              <span class="likes-counter">75</span>
-              <button class="like-button -active-like"></button>
-            </div>
-          </div>
-        </li>
+        
       </ul>
       <div class="add-form">
         <input
@@ -69,36 +36,92 @@
     const input2 = document.getElementById('comment-field')
     const addName = document.querySelector('.add-form-name')
     const button = document.querySelector('.add-form-button')
-const commentEl = document.querySelector('.comments')
+    const commentEl = document.querySelector('.comments')
+    const likebtn = document.querySelector ('.like-button')
+    const counterEl = document.querySelector('.likes-counter')
 
+    const comments = [{
+      id: 1, 
+      name: 'Глеб Фокин',
+      comment: 'Это будет первый комментарий на этой странице',
+      date: '12.02.22 12:18',
+      likeCounter: 3,
+      isLiked: false
+    } ,
+  { id: 2, 
+      name: 'Варвара Н.',
+      comment: 'Мне нравится как оформлена эта страница! ❤',
+      date: '13.02.22 19:22',
+      likeCounter: 75,
+      isLiked: true
+    }
+
+  ]
+function renderComments(){
+const commentsHtml = comments.map((item) => {
+return `<li class="comment">
+          <div class="comment-header">
+            <div>${item.name}</div>
+             <div>${new Date().toLocaleDateString('ru-RU')} ${new Date().toLocaleTimeString('ru-RU',{hour:"2-digit",minute:"2-digit"})}</div>
+          </div>
+          <div class="comment-body">
+            <div class="comment-text">
+              ${item.comment}
+            </div>
+          </div>
+          <div class="comment-footer">
+            <div class="likes">
+              <span class="likes-counter">${item.likeCounter}</span>
+              <button data-id="${item.id}" data-liked="${item.isLiked}"
+           class="like-button ${item.isLiked === true ? '-active-like': ''}"></button>
+            </div>
+          </div>
+        </li>`
+}).join(' ')
+console.log(commentsHtml);
+ commentEl.innerHTML = commentsHtml
+ handleLikes()
+}
+
+function handleLikes() {
+const likeButtons = document.querySelectorAll('.like-button')
+for (const likeButton of likeButtons) {
+ likeButton.addEventListener('click', () => {
+  const id = likeButton.dataset.id
+  const isLiked = likeButton.dataset.liked
+ 
+    comments[id -1].isLiked = !comments[id -1].isLiked
+comments[id -1].likeCounter += isLiked === 'true' ? -1 : 1
+  renderComments()
+ 
+ }) 
+}
+}
+
+    
     button.addEventListener('click', () => {
       if (!input.value.trim() || !input2.value.trim()) {
         alert('Введите имя и комментарий')
         return
       }
-      const oldHtml = commentEl.innerHTML;
-      commentEl.innerHTML += `<li class="comment">
-          <div class="comment-header">
-            <div>${input.value}</div>
-            <div>${new Date().toLocaleDateString('ru-RU')} ${new Date().toLocaleTimeString('ru-RU',{hour:"2-digit",minute:"2-digit"})}</div>
-          </div>
-          <div class="comment-body">
-            <div class="comment-text">
-              ${input2.value}
-            </div>
-          </div>
-          <div class="comment-footer">
-            <div class="likes">
-              <span class="likes-counter">0</span>
-              <button class="like-button"></button>
-            </div>
-          </div>
-        </li>`
+    
+      const newComment = {
+        id: comments.length +1, 
+      name: input.value,
+      comment: input2.value,
+      date: new Date().toLocaleDateString('ru-RU') + new Date().toLocaleTimeString('ru-RU',{hour:"2-digit",minute:"2-digit"}),
+      likeCounter: 0,
+      isLiked: false 
+      }
+      comments.push(newComment)
+      renderComments()
 input.value = '';
 input2.value = ''
 
     })
 
     console.log("It works!");
+    renderComments()
+  
   </script>
 </html>
