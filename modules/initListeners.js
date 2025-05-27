@@ -1,4 +1,5 @@
-import { comments } from './comments.js'
+import { fetchComments, postComments } from './api.js'
+import { comments, setComments } from './comments.js'
 import { renderComments } from './renderComments.js'
 import { sanitiseHtml } from './sanitiseHtml.js'
 
@@ -9,9 +10,10 @@ export const initLikelisteners = () => {
             event.stopPropagation()
             const id = likeButton.dataset.id
             const isLiked = likeButton.dataset.liked
-
-            comments[id - 1].isLiked = !comments[id - 1].isLiked
-            comments[id - 1].likeCounter += isLiked === 'true' ? -1 : 1
+            const comment = comments.find((c) => c.id === +id)
+            console.log(id, comment)
+            comment.isLiked = !comment.isLiked
+            comment.likes += isLiked === 'true' ? -1 : 1
             renderComments()
         })
     }
@@ -28,20 +30,16 @@ export const initReplyListeners = () => {
         }
 
         const newComment = {
-            id: comments.length + 1,
             name: sanitiseHtml(input.value),
-            comment: sanitiseHtml(input2.value),
-            date:
-                new Date().toLocaleDateString('ru-RU') +
-                new Date().toLocaleTimeString('ru-RU', {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                }),
-            likeCounter: 0,
-            isLiked: false,
+            text: sanitiseHtml(input2.value),
         }
-        comments.push(newComment)
-        renderComments()
+        postComments(newComment).then(() => {
+            fetchComments().then((data) => {
+                setComments(data.comments)
+                renderComments()
+            })
+        })
+
         input.value = ''
         input2.value = ''
     })

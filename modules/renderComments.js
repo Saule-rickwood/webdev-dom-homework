@@ -7,7 +7,7 @@ export function renderComments() {
         .map((item) => {
             return `<li class="comment">
         <div class="comment-header">
-          <div>${item.name}</div>
+          <div>${item.author.name}</div>
            <div>${new Date().toLocaleDateString(
                'ru-RU',
            )} ${new Date().toLocaleTimeString('ru-RU', {
@@ -17,12 +17,12 @@ export function renderComments() {
         </div>
         <div class="comment-body">
           <div class="comment-text">
-            ${item.comment}
+            ${item.text}
           </div>
         </div>
         <div class="comment-footer">
           <div class="likes">
-            <span class="likes-counter">${item.likeCounter}</span>
+            <span class="likes-counter">${item.likes}</span>
             <button data-id="${item.id}" data-liked="${item.isLiked}"
          class="like-button ${
              item.isLiked === true ? '-active-like' : ''
