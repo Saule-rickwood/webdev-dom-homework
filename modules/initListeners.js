@@ -20,7 +20,7 @@ export const initLikelisteners = () => {
     }
 }
 
-export const initReplyListeners = () => {
+export const initAddCommentListeners = () => {
     const button = document.querySelector('.add-form-button')
     const input = document.getElementById('name-field')
     const input2 = document.getElementById('comment-field')
