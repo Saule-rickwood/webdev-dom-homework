@@ -1,5 +1,6 @@
-import { fetchComments, postComments } from './api.js'
-import { comments, setComments } from './comments.js'
+import { postComments } from './api.js'
+import { comments } from './comments.js'
+import { fetchAndRenderComments } from './fetchAndRenderComments.js'
 import { renderComments } from './renderComments.js'
 import { sanitiseHtml } from './sanitiseHtml.js'
 
@@ -28,16 +29,17 @@ export const initReplyListeners = () => {
             alert('Введите имя и комментарий')
             return
         }
-
+        document.querySelector('.add-comment-text').textContent =
+            'Комментарий добавляется'
+        document.querySelector('.add-form').style.display = 'none'
         const newComment = {
             name: sanitiseHtml(input.value),
             text: sanitiseHtml(input2.value),
         }
         postComments(newComment).then(() => {
-            fetchComments().then((data) => {
-                setComments(data.comments)
-                renderComments()
-            })
+            document.querySelector('.add-comment-text').textContent = ''
+            document.querySelector('.add-form').style.display = 'flex'
+            fetchAndRenderComments()
         })
 
         input.value = ''
