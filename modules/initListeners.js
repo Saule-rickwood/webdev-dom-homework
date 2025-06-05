@@ -36,14 +36,34 @@ export const initAddCommentListeners = () => {
             name: sanitiseHtml(input.value),
             text: sanitiseHtml(input2.value),
         }
-        postComments(newComment).then(() => {
-            document.querySelector('.add-comment-text').textContent = ''
-            document.querySelector('.add-form').style.display = 'flex'
-            fetchAndRenderComments()
-        })
+        postComments(newComment)
+            .then(() => {
+                input.value = ''
+                input2.value = ''
+                document.querySelector('.add-comment-text').textContent = ''
+                document.querySelector('.add-form').style.display = 'flex'
+                fetchAndRenderComments()
+            })
+            .catch((error) => {
+                document.querySelector('.add-comment-text').textContent = ''
+                document.querySelector('.add-form').style.display = 'flex'
+                if (error.message === 'Failed to fetch') {
+                    alert('Нет интернета, попробуйте снова')
+                }
+                if (error.message === 'Ошибка сервера') {
+                    alert('Ошибка сервера')
+                }
+                if (error.message === 'Неверный запрос') {
+                    alert('Имя и комментарий должны быть не менее 3-х символов')
+                    input.value.classList.add('-error')
+                    input2.value.classList.add('-error')
 
-        input.value = ''
-        input2.value = ''
+                    setTimeout(() => {
+                        input.value.classList.remove('-error')
+                        input2.value.classList.remove('-error')
+                    }, 2000)
+                }
+            })
     })
 }
 

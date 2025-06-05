@@ -6,16 +6,27 @@ export const fetchComments = () => {
             console.log(res)
             return res.json()
         })
-        .then((data) => {
-            console.log(data)
-            return data
+        .catch((error) => {
+            alert(error.message)
         })
 }
 export const postComments = (data) => {
     return fetch(host + '/comments', {
         method: 'POST',
-        body: JSON.stringify(data),
-    }).then((res) => {
-        console.log(res)
+        body: JSON.stringify({ ...data, forceError: true }),
     })
+        .then((response) => {
+            if (response.status === 500) {
+                throw new Error('Ошибка сервера')
+            }
+            if (response.status === 400) {
+                throw new Error('Неверный запрос')
+            }
+            if (response === 201) {
+                return response.json()
+            }
+        })
+        .then((res) => {
+            console.log(res)
+        })
 }
