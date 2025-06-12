@@ -9,9 +9,10 @@ export const initLikelisteners = () => {
     for (const likeButton of likeButtons) {
         likeButton.addEventListener('click', (event) => {
             event.stopPropagation()
+            console.log(likeButton)
             const id = likeButton.dataset.id
             const isLiked = likeButton.dataset.liked
-            const comment = comments.find((c) => c.id === +id)
+            const comment = comments.find((c) => c.id === id)
             console.log(id, comment)
             comment.isLiked = !comment.isLiked
             comment.likes += isLiked === 'true' ? -1 : 1
@@ -38,7 +39,6 @@ export const initAddCommentListeners = () => {
         }
         postComments(newComment)
             .then(() => {
-                input.value = ''
                 input2.value = ''
                 document.querySelector('.add-comment-text').textContent = ''
                 document.querySelector('.add-form').style.display = 'flex'

@@ -9,7 +9,8 @@ export function fetchAndRenderComments() {
             'Подождите, комментарии загружаются...'
         isFirstRender = false
     }
-    fetchComments().then((comments) => {
+
+    return fetchComments().then((comments) => {
         document.querySelector('.loading-text').textContent = ''
         setComments(comments.comments)
         renderComments()
