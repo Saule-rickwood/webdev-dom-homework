@@ -2,7 +2,7 @@ import { renderApp } from '../index.js'
 import { setUser, signIn } from './api.js'
 
 export const renderLogin = () => {
-    document.querySelector('.login-form').innerHTML = `
+    document.querySelector('.container').innerHTML = `
      
         <input
           type="text"

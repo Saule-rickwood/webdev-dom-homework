@@ -1,3 +1,4 @@
+import { user } from './api.js'
 import { comments } from './comments.js'
 import { initLikelisteners, quoteComment } from './initListeners.js'
 
@@ -35,6 +36,8 @@ export function renderComments() {
     console.log(commentsHtml)
 
     commentEl.innerHTML = commentsHtml
-    initLikelisteners()
-    quoteComment()
+    if (user !== null) {
+        initLikelisteners()
+        quoteComment()
+    }
 }
