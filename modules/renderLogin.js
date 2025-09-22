@@ -28,7 +28,7 @@ export const renderLogin = () => {
             .then((data) => {
                 console.log(data)
                 setUser(data.user)
-                document.querySelector('.login-form').innerHTML = ''
+                // document.querySelector('.login-form').innerHTML = ''
                 renderApp()
             })
             .catch((error) => {
