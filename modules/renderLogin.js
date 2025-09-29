@@ -7,13 +7,13 @@ export const renderLogin = () => {
         <input
           type="text"
           id="name-field"
-          class="add-form-name"
+          class="login-name"
           placeholder="Введите ваш логин"
         />
         <input
           type="password"
           id="comment-field"
-          class="add-form-text"
+          class="login-password"
           placeholder="Введите ваш пароль"
          
        />
